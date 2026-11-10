@@ -1,6 +1,6 @@
 /// # Audio: Invoked
 /// Each audio file will be stored as one of these structs before being sent to J*vaScript:
-pub struct Audio {
+pub struct VesAudio {
     title: String,
     album: String,
     artists: Vec<String>,
