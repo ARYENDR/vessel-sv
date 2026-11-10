@@ -7,7 +7,7 @@ pub struct VesAudio {
     title: String,
     album: String,
     artists: Vec<String>,
-    track_number: u16,
+    track_number: u8,
     path: String,
     cover: String, // idk what this is supposed to be
     length: u32,   // in milliseconds
