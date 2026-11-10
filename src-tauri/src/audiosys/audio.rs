@@ -1,5 +1,8 @@
+use serde::Serialize;
+
 /// # Audio: Invoked
 /// Each audio file will be stored as one of these structs before being sent to J*vaScript:
+#[derive(Serialize)]
 pub struct VesAudio {
     title: String,
     album: String,
