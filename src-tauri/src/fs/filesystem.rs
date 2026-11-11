@@ -1,6 +1,7 @@
-use super::super::audiosys::audio::VesAudio;
 use audiotags::Tag;
 use std::{fs, path::Path};
+
+use crate::audiosys::audio::VesAudio;
 
 #[tauri::command]
 pub fn get_files(path: &str) -> Result<Vec<VesAudio>, String> {
