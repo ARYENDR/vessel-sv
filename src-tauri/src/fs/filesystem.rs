@@ -1,4 +1,4 @@
-use audiotags::{Tag};
+use audiotags::Tag;
 use std::{fs, path::Path};
 
 use crate::audiosys::audio::VesAudio;
@@ -7,7 +7,7 @@ use crate::audiosys::audio::VesAudio;
 pub fn get_files(path: &str) -> Result<Vec<VesAudio>, String> {
     let audio_extensions = ["mp3", "ogg", "flac", "wav"];
     let path = Path::new(path);
-    let audio_list: Vec<VesAudio> = vec![];
+    let mut audio_list: Vec<VesAudio> = vec![];
     if let Ok(entries) = fs::read_dir(path) {
         for entry in entries {
             if let Ok(ent) = entry {
@@ -19,18 +19,36 @@ pub fn get_files(path: &str) -> Result<Vec<VesAudio>, String> {
                     let tagged = Tag::new().read_from_path(ent.path()).unwrap();
                     let anytagged = &tagged.to_anytag(); // idk why this is necessary, rust gave me an error without this
 
-                    println!(
-                        "{} from {} number {} by {} length {} desc {}",
-                        anytagged.title().unwrap(),
-                        anytagged.album_title().unwrap(),
-                        anytagged.track_number().unwrap_or(1),
-                        anytagged.artists().unwrap().join(" ,"),
-                        // ent.path().into_string().unwrap(),
-                        anytagged.duration().unwrap(),
-                        "Nothing lmaoo".to_string()
-                    );
+                    // println!(
+                    //     "{} from {} number {} by {} length {} desc {}",
+                    //     anytagged.title().unwrap(),
+                    //     anytagged.album_title().unwrap(),
+                    //     anytagged.track_number().unwrap_or(1),
+                    //     anytagged.artists().unwrap().join(" ,"),
+                    //     // ent.path().into_string().unwrap(),
+                    //     anytagged.duration().unwrap_or(0.0),
+                    //     "Nothing lmaoo".to_string()
+                    // );
 
-                    // VesAudio::new(title, album, artists, track_number, path, cover, length, lyric_path, description, rating)
+                    audio_list.push(VesAudio::new(
+                        anytagged.title().unwrap().to_string(),
+                        anytagged.album_title().unwrap().to_string(),
+                        anytagged
+                            .artists()
+                            .unwrap()
+                            .to_vec()
+                            .to_owned()
+                            .into_iter()
+                            .map(|x| x.to_owned())
+                            .collect(), // all will be okay
+                        anytagged.track_number().unwrap_or(1),
+                        ent.path().into_string().unwrap(),
+                        "cover test".to_string(), // convert this from picture to string, somehow...
+                        anytagged.duration().unwrap_or(0.0),
+                        ent.path().into_string().unwrap(),
+                        "description".to_string(),
+                        7,
+                    ));
                 }
             }
         }
