@@ -6,7 +6,7 @@ use serde::Serialize;
 pub struct VesAudio {
     title: String,
     album: String,
-    artists: Vec<&str>,
+    artists: Vec<String>,
     track_number: u16,
     path: String,
     cover: String, // idk what this is supposed to be
@@ -20,7 +20,7 @@ impl VesAudio {
     pub fn new(
         title: String,
         album: String,
-        artists: Vec<&str>,
+        artists: Vec<String>,
         track_number: u16,
         path: String,
         cover: String,
