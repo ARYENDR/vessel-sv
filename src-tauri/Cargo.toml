@@ -1,8 +1,8 @@
 [package]
 name = "vessel"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+version = "0.0.1"
+description = "A music player that does stuff"
+authors = ["ARYENDR"]
 edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
