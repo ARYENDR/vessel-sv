@@ -1,6 +1,9 @@
-use std::{
-    fs::{self, File},
-    path::Path,
+use std::{fs, path::Path};
+
+use lofty::{
+    file::{AudioFile, TaggedFileExt},
+    read_from_path,
+    tag::{Accessor, ItemKey::*},
 };
 
 use crate::audiosys::audio::VesAudio;
