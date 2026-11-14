@@ -23,9 +23,5 @@ pub fn get_files(path: &str) -> Result<Vec<VesAudio>, String> {
             }
         }
     }
-    if audio_list.is_empty() {
-        Err(String::from("List is empty"))
-    } else {
-        Ok(audio_list)
-    }
+    Err(String::from("Error occured"))
 }
