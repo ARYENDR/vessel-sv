@@ -9,8 +9,8 @@ pub struct VesAudio {
     artists: Vec<String>,
     track_number: u32,
     path: String,
-    cover: Vec<u8>, // idk what this is supposed to be
-    length: f64,    // in milliseconds
+    has_cover: bool,
+    length: f64, // in milliseconds
     lyric_path: String,
     description: String,
     rating: u8, // 0-10
@@ -23,7 +23,7 @@ impl VesAudio {
         artists: Vec<String>,
         track_number: u32,
         path: String,
-        cover: Vec<u8>,
+        has_cover: bool,
         length: f64,
         lyric_path: String,
         description: String,
@@ -35,7 +35,7 @@ impl VesAudio {
             artists,
             track_number,
             path,
-            cover,
+            has_cover,
             length,
             lyric_path,
             description,
