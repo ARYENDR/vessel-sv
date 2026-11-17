@@ -2,6 +2,7 @@ use std::{fs, path::Path};
 
 use lofty::{
     file::{AudioFile, TaggedFileExt},
+    picture::PictureType::CoverFront,
     read_from_path,
     tag::{Accessor, ItemKey::*},
 };
@@ -13,7 +14,7 @@ use crate::audiosys::audio::VesAudio;
 // read/write meta with lofty
 
 #[tauri::command]
-pub fn get_files(path: &str) -> Result<Vec<VesAudio>, String> {
+pub fn get_files(path: &str) -> Vec<VesAudio> {
     let audio_extensions = ["mp3", "ogg", "flac", "wav"];
     let path = Path::new(path);
 
@@ -27,26 +28,26 @@ pub fn get_files(path: &str) -> Result<Vec<VesAudio>, String> {
                     audio_extensions.contains(&x.to_ascii_lowercase().to_str().unwrap())
                 }) {
                     let tagged_file = read_from_path(ent.path()).expect("Fail to read");
+                    println!("{}", ent.path().display());
                     if let Some(tag) = tagged_file.primary_tag() {
-                        let aud = (VesAudio::new(
+                        let aud = VesAudio::new(
                             tag.title().unwrap().to_string(),
                             tag.album().unwrap().to_string(),
                             tag.get_items(TrackArtists)
                                 .map(|x| x.clone().into_value().into_string().unwrap())
                                 .collect(),
-                            tag.track().unwrap(),
+                            tag.track().unwrap_or(1),
                             ent.path().to_str().unwrap().to_string(),
                             tag.pictures()
-                                .first()
-                                .ok_or("Track has no cover")
-                                .expect("Something happened")
-                                .data()
-                                .to_vec(),
+                                .iter()
+                                .find(|p| p.pic_type() == CoverFront)
+                                .or_else(|| tag.pictures().first())
+                                .is_some(),
                             tagged_file.properties().duration().as_secs_f64(),
                             ent.path().to_str().unwrap().to_string(),
                             String::from("hello"),
                             7,
-                        ));
+                        );
 
                         audio_vec.push(aud);
                     }
