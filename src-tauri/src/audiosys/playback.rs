@@ -3,6 +3,7 @@ use std::{
     io::BufReader,
     sync::{Mutex, mpsc},
     thread,
+    time::Duration,
 };
 
 use rodio::{Decoder, DeviceSinkBuilder, Player};
@@ -29,6 +30,7 @@ pub fn spawn_audio_thread() -> AudTx {
         while let Ok(msg) = rx.recv() {
             match msg {
                 Message::Play(path) => {
+                    player.set_volume(1.0);
                     let file = match File::open(&path) {
                         Ok(f) => f,
                         Err(e) => {
@@ -45,8 +47,23 @@ pub fn spawn_audio_thread() -> AudTx {
                         Err(e) => println!("can't decode: {}", e),
                     }
                 }
-                Message::Pause => player.pause(),
-                Message::Resume => player.play(),
+                Message::Pause => {
+                    while player.volume() > 0.0 {
+                        player.set_volume(player.volume() - 0.01);
+                        thread::sleep(Duration::from_millis(5));
+                    }
+                    player.pause();
+                    player.set_volume(1.0);
+                }
+                Message::Resume => {
+                    player.set_volume(0.0);
+                    player.play();
+                    while player.volume() < 1.0 {
+                        player.set_volume(player.volume() + 0.01);
+                        thread::sleep(Duration::from_millis(2));
+                    }
+                    player.set_volume(1.0);
+                }
                 Message::Stop => player.clear(),
             }
         }
