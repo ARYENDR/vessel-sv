@@ -6,6 +6,7 @@ use std::{
 };
 
 use rodio::{Decoder, DeviceSinkBuilder, Player};
+use tauri::State;
 
 enum Message {
     Play(String),
@@ -50,4 +51,20 @@ pub fn spawn_audio_thread() -> AudTx {
     });
 
     AudTx(Mutex::new(tx))
+}
+
+#[tauri::command]
+pub fn playback(
+    message: String,
+    path: Option<String>,
+    audio: State<'_, AudTx>,
+) -> Result<(), String> {
+    let cmd = match message.as_str() {
+        "Play" => Message::Play(path.ok_or("Play needs a path")?),
+        "Pause" => Message::Pause,
+        "Resume" => Message::Resume,
+        "Stop" => Message::Stop,
+        other => return Err(format!("unknown playback message: {other}")),
+    };
+    audio.0.lock().unwrap().send(cmd).map_err(|e| e.to_string())
 }
