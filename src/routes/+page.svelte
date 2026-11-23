@@ -21,7 +21,12 @@
     {#if typeof list != "string"}
         <ul>
             {#each list as entry}
-                <li>{entry.title}</li>
+                <h1>ui</h1>
+                <button class="border active:bg-blue-700" onclick={
+                    async () => {
+                      invoke("playback", {path: entry.path, message: "Play"})
+                    }
+                    }>Play</button>
             {/each}
         </ul>
     {:else}
