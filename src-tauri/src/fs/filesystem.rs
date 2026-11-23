@@ -55,5 +55,10 @@ pub fn get_files(path: &str) -> Vec<VesAudio> {
             }
         }
     }
-    Ok(audio_vec)
+    println!("Finished! sent!");
+    audio_vec
+}
+
+pub fn send_cover(path: &str) {
+    // TODO: send cover via this
 }
