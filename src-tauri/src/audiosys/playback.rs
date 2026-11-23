@@ -16,7 +16,6 @@ enum Message {
     Stop,
 }
 
-
 // this took me days of documentation and i am proud of it aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 pub struct AudTx(Mutex<mpsc::Sender<Message>>);
 
