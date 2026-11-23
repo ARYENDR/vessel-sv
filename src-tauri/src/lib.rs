@@ -1,3 +1,5 @@
+use crate::audiosys::playback::spawn_audio_thread;
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 mod audiosys;
 mod fs;
@@ -13,7 +15,11 @@ pub fn run() {
         .manage(spawn_audio_thread())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, fs::filesystem::get_files])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            fs::filesystem::get_files,
+            audiosys::playback::playback,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
