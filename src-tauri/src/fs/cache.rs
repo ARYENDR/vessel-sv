@@ -1,5 +1,7 @@
 use std::fs;
 
+use toml::Table;
+
 // checks if dir exists, create dir. check if file exists, create file
 pub fn cache_control() -> Result<(), String> {
     let project_dir = directories::ProjectDirs::from("org", "vxil", "vessel")
