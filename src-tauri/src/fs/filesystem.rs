@@ -13,9 +13,10 @@ use crate::audiosys::audio::VesAudio;
 // read/write meta with lofty
 
 #[tauri::command]
-pub fn get_files(path: &str) -> Vec<VesAudio> {
+pub fn get_audio_meta(path: String) -> Vec<VesAudio> {
+    let path = path.replace("\"", "");
     let audio_extensions = ["mp3", "ogg", "flac", "wav"];
-    let path = Path::new(path);
+    let path = Path::new(path.as_str());
 
     let mut audio_vec: Vec<VesAudio> = vec![];
 
