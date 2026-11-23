@@ -30,4 +30,6 @@ fn get_cache() -> Table {
 }
 
 #[tauri::command]
-pub fn get_cache() {}
+pub fn get_cache_by_key() -> String {
+    String::from("")
+}
