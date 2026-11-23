@@ -17,9 +17,9 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             greet,
-            fs::filesystem::get_files,
+            fs::filesystem::get_audio_meta,
             audiosys::playback::playback,
-            fs::cache::get_cache,
+            fs::cache::get_cache_by_key,
             fs::cache::set_cache,
         ])
         .run(tauri::generate_context!())
