@@ -25,7 +25,7 @@ pub fn set_cache(k: &str, v: &str) {
     let mut cache_toml = get_cache();
     cache_toml.insert(k.to_string(), toml::Value::String(v.to_string()));
     let cache_str = toml::to_string(&cache_toml).unwrap();
-    fs::write(project_dir.config_dir().join("vesconfig.toml"), cache_str);
+    fs::write(project_dir.config_dir().join("vesconfig.toml"), cache_str).expect("fail to write");
 }
 
 fn get_cache() -> Table {
