@@ -19,6 +19,8 @@ pub fn run() {
             greet,
             fs::filesystem::get_files,
             audiosys::playback::playback,
+            fs::cache::get_cache,
+            fs::cache::set_cache,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
