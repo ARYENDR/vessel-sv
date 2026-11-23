@@ -39,6 +39,10 @@ fn get_cache() -> Table {
 #[tauri::command]
 pub fn get_cache_by_key(k: &str) -> String {
     let toml_cache = get_cache();
-    let val = toml_cache.get(k).expect("no value");
-    val.to_string()
+    if let Some(val) = toml_cache.get(k) {
+        let value_str = val.to_string();
+        value_str
+    } else {
+        String::from("")
+    }
 }
