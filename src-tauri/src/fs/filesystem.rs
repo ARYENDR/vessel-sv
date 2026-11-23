@@ -9,8 +9,7 @@ use lofty::{
 
 use crate::audiosys::audio::VesAudio;
 
-// decode and demux with symphonia
-// play audio with cpal
+// just use rodio
 // read/write meta with lofty
 
 #[tauri::command]
