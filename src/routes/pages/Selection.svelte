@@ -1,5 +1,15 @@
 <script lang="ts">
+    import { open } from "@tauri-apps/plugin-dialog";
 
+    let path: string = $state(".");
+    const getSetPath = async () => {
+      let a = await open({
+        multiple: false,
+        directory: true,
+      })
+
+      a == null ? path = "." : path = a
+    }
 </script>
 
 <main class="w-screen h-screen flex flex-col justify-center items-center">
