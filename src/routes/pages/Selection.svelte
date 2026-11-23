@@ -1,6 +1,9 @@
 <script lang="ts">
     import { invoke } from "@tauri-apps/api/core";
     import { open } from "@tauri-apps/plugin-dialog";
+    import { onMount } from "svelte";
+
+    let { onPathChange } = $props()
 
     let path: string = $state("");
     const getSetPath = async () => {
@@ -10,8 +13,10 @@
       })
 
       a == null ? path = path : path = a
+      onPathChange?.(path)
       await invoke("set_cache", {k: "folder_path", v: path})
     }
+
 </script>
 
 <main class="w-screen h-screen flex flex-col justify-center items-center">
