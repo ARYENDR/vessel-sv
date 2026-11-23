@@ -19,7 +19,14 @@ pub fn cache_control() -> Result<(), String> {
 }
 
 #[tauri::command]
-pub fn set_cache() {}
+pub fn set_cache(k: &str, v: &str) {
+    let project_dir = directories::ProjectDirs::from("org", "vxil", "vessel")
+        .expect("home not found, digitally homeless, i see...");
+    let mut cache_toml = get_cache();
+    cache_toml.insert(k.to_string(), toml::Value::String(v.to_string()));
+    let cache_str = toml::to_string(&cache_toml).unwrap();
+    fs::write(project_dir.config_dir().join("vesconfig.toml"), cache_str);
+}
 
 fn get_cache() -> Table {
     let project_dir =
