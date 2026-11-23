@@ -7,30 +7,7 @@
 </script>
 
 <main>
-    <button class="p-2" onclick={async () => {
-      const a = await open({
-        directory: true,
-        multiple: false,
-      })
-
-      a == null ? null : folderPath = a
-      list = await invoke("get_files", {path: folderPath})
-      console.log(list)
-    }}>Choose File</button>
-    <h1>{folderPath}</h1>
-    {#if typeof list != "string"}
-        <ul>
-            {#each list as entry}
-                <h1>ui</h1>
-                <button class="border active:bg-blue-700" onclick={
-                    async () => {
-                      invoke("playback", {path: entry.path, message: "Play"})
-                    }
-                    }>Play</button>
-            {/each}
-        </ul>
-    {:else}
-        <h1>List is empty</h1>
+    {#if folderPath == ""}
+        <Selection />
     {/if}
-
 </main>
