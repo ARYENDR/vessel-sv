@@ -4,7 +4,7 @@ use lofty::{
     file::{AudioFile, TaggedFileExt},
     picture::PictureType::CoverFront,
     read_from_path,
-    tag::{Accessor, ItemKey::*},
+    tag::Accessor,
 };
 
 use crate::audiosys::audio::VesAudio;
@@ -30,11 +30,16 @@ pub fn get_audio_meta(path: String) -> Vec<VesAudio> {
                     let tagged_file = read_from_path(ent.path()).expect("Fail to read");
                     println!("{}", ent.path().display());
                     if let Some(tag) = tagged_file.primary_tag() {
+                        let audiotagged = audiotags::Tag::new().read_from_path(ent.path()).unwrap();
+
                         let aud = VesAudio::new(
                             tag.title().unwrap().to_string(),
                             tag.album().unwrap().to_string(),
-                            tag.get_items(TrackArtists)
-                                .map(|x| x.clone().into_value().into_string().unwrap())
+                            audiotagged // audiotags use in THIS ONE LINE btw
+                                .artists()
+                                .unwrap()
+                                .into_iter()
+                                .map(|a| a.to_string())
                                 .collect(),
                             tag.track().unwrap_or(1),
                             ent.path().to_str().unwrap().to_string(),
