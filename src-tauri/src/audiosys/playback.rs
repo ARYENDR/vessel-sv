@@ -46,22 +46,27 @@ pub fn spawn_audio_thread() -> AudTx {
                         Err(e) => println!("can't decode: {}", e),
                     }
                 }
-                Message::Pause => {
-                    while player.volume() > 0.0 {
-                        player.set_volume(player.volume() - 0.01);
-                        thread::sleep(Duration::from_millis(5));
+                Message::PlayPause => {
+                    match player.is_paused() {
+                        false => {
+                            while player.volume() > 0.0 {
+                                player.set_volume(player.volume() - 0.01);
+                                thread::sleep(Duration::from_millis(5));
+                            }
+                            player.pause();
+                            player.set_volume(1.0);
+                        }
+                        true => {
+                            player.set_volume(0.0);
+                            player.play();
+                            while player.volume() < 1.0 {
+                                player.set_volume(player.volume() + 0.01);
+                                thread::sleep(Duration::from_millis(5));
+                            }
+                            player.set_volume(1.0);
+                        }
                     }
-                    player.pause();
-                    player.set_volume(1.0);
-                }
-                Message::Resume => {
-                    player.set_volume(0.0);
-                    player.play();
-                    while player.volume() < 1.0 {
-                        player.set_volume(player.volume() + 0.01);
-                        thread::sleep(Duration::from_millis(2));
-                    }
-                    player.set_volume(1.0);
+                    println!("{}", player.is_paused());
                 }
                 Message::Stop => player.clear(),
                 Message::Seek(d) => {
@@ -97,9 +102,9 @@ pub fn playback(
 ) -> Result<(), String> {
     let cmd = match message.as_str() {
         "Play" => Message::Play(path.ok_or("Play needs a path")?),
-        "Pause" => Message::Pause,
-        "Resume" => Message::Resume,
+        "PlayPause" => Message::PlayPause,
         "Stop" => Message::Stop,
+        "Seek" => Message::Seek(duration.ok_or(0.0).unwrap()),
         other => return Err(format!("unknown playback message: {other}")),
     };
     audio.0.lock().unwrap().send(cmd).map_err(|e| e.to_string())
