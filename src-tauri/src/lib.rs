@@ -11,6 +11,7 @@ fn greet(name: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    cache_control().unwrap();
     tauri::Builder::default()
         .manage(spawn_audio_thread()) // spawns audio thread every boot
         .plugin(tauri_plugin_dialog::init())
