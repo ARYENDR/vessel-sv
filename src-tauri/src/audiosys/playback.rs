@@ -1,6 +1,5 @@
 use std::{
     fs::File,
-    io::BufReader,
     sync::{Mutex, mpsc},
     thread,
     time::Duration,
