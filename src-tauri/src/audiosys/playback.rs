@@ -7,13 +7,12 @@ use std::{
 };
 
 use rodio::{Decoder, DeviceSinkBuilder, Player};
-use tauri::State;
 
 enum Message {
     Play(String),
-    Pause,
-    Resume,
+    PlayPause,
     Stop,
+    Seek(f64),
 }
 
 // this took me days of documentation and i am proud of it aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -37,7 +36,7 @@ pub fn spawn_audio_thread() -> AudTx {
                             continue;
                         }
                     };
-                    match Decoder::try_from(BufReader::new(file)) {
+                    match Decoder::try_from(file) {
                         Ok(source) => {
                             player.clear();
                             player.append(source);
