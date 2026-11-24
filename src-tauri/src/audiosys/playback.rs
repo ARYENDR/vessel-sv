@@ -7,6 +7,7 @@ use std::{
 };
 
 use rodio::{Decoder, DeviceSinkBuilder, Player};
+use tauri::State;
 
 enum Message {
     Play(String),
