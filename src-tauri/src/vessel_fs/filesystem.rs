@@ -1,16 +1,26 @@
-use std::{fs, path::Path};
+use std::{
+    collections::HashMap,
+    fs,
+    io::Cursor,
+    path::{Path, PathBuf},
+    sync::Mutex,
+};
 
+use image::{codecs::jpeg::JpegEncoder, imageops::thumbnail};
 use lofty::{
     file::{AudioFile, TaggedFileExt},
-    picture::PictureType::CoverFront,
+    picture::PictureType::{self, CoverFront},
     read_from_path,
     tag::Accessor,
 };
+use tauri::{Manager, ipc::Response};
 
 use crate::audiosys::audio::VesAudio;
 
 // just use rodio
 // read/write meta with lofty
+
+pub struct Library(pub Mutex<HashMap<String, PathBuf>>);
 
 #[tauri::command]
 pub fn get_audio_meta(path: String) -> Vec<VesAudio> {
@@ -64,6 +74,6 @@ pub fn get_audio_meta(path: String) -> Vec<VesAudio> {
     audio_vec
 }
 
-pub fn send_cover(path: &str) {
-    // TODO: send cover via this
+pub fn get_lyrics() {
+    unimplemented!();
 }
