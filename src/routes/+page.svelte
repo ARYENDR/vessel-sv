@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import Selection from "./pages/Selection.svelte";
     import MainWindow from "./pages/MainWindow.svelte";
+    import PlayBar from "./pages/components/PlayBar.svelte";
 
     let folderPath = $state('');
 
@@ -16,5 +17,6 @@
         <Selection onPathChange={(p: string) => {folderPath = p}}/>
     {:else}
         <MainWindow folderPath={folderPath}/>
+        <PlayBar />
     {/if}
 </main>
