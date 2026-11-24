@@ -2,7 +2,7 @@ use crate::audiosys::playback::spawn_audio_thread;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 mod audiosys;
-mod fs;
+mod vessel_fs;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
