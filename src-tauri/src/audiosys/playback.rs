@@ -64,6 +64,23 @@ pub fn spawn_audio_thread() -> AudTx {
                     player.set_volume(1.0);
                 }
                 Message::Stop => player.clear(),
+                Message::Seek(d) => {
+                    if d.is_sign_negative() {
+                        let d = d * -1.0;
+                        if player.get_pos().clone().as_secs_f64() - d < 0.0 {
+                            player.try_seek(Duration::from_secs_f64(0.0)).unwrap();
+                        } else {
+                            player
+                                .try_seek(player.get_pos() - Duration::from_secs_f64(d))
+                                .unwrap();
+                        }
+                    } else {
+                        player
+                            .try_seek(player.get_pos() + Duration::from_secs_f64(d))
+                            .unwrap();
+                    }
+                    println!("{}", player.get_pos().as_secs_f64());
+                }
             }
         }
     });
@@ -75,6 +92,7 @@ pub fn spawn_audio_thread() -> AudTx {
 pub fn playback(
     message: String,
     path: Option<String>,
+    duration: Option<f64>,
     audio: State<'_, AudTx>,
 ) -> Result<(), String> {
     let cmd = match message.as_str() {
