@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { invoke } from "@tauri-apps/api/core";
+    import { convertFileSrc, invoke } from "@tauri-apps/api/core";
     import { onMount } from "svelte";
 
-    let {folderPath} = $props()
+    let { folderPath } = $props()
 
     let list: {}[] = $state([]);
 
