@@ -1,19 +1,16 @@
 use std::{
     collections::HashMap,
     fs,
-    io::Cursor,
     path::{Path, PathBuf},
     sync::Mutex,
 };
 
-use image::{codecs::jpeg::JpegEncoder, imageops::thumbnail};
 use lofty::{
     file::{AudioFile, TaggedFileExt},
-    picture::PictureType::{self, CoverFront},
+    picture::PictureType::CoverFront,
     read_from_path,
     tag::Accessor,
 };
-use tauri::{Manager, ipc::Response};
 
 use crate::audiosys::audio::VesAudio;
 
