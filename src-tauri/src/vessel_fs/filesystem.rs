@@ -74,6 +74,23 @@ pub fn get_audio_meta(path: String) -> Vec<VesAudio> {
     audio_vec
 }
 
+pub fn get_cover(app: AppHandle, path: &str) -> Option<Vec<u8>> {
+    let path = percent_encoding::percent_decode_str(path)
+        .decode_utf8_lossy()
+        .to_string();
+    let tagged = lofty::read_from_path(path);
+    Some(
+        tagged
+            .unwrap()
+            .primary_tag()
+            .unwrap()
+            .get_picture_type(CoverFront)
+            .unwrap()
+            .data()
+            .to_vec(),
+    )
+}
+
 pub fn get_lyrics() {
     unimplemented!();
 }
