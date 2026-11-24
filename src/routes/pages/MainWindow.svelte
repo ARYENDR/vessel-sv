@@ -12,7 +12,7 @@
 
 </script>
 
-<main class="w-screen h-screen bg-main-bg text-white">
+<main class="w-screen h-screen bg-main-bg text-white overflow-x-scroll">
     <div class="flex flex-col p-5">
         {#each list as file}
             <button ondblclick={async () => {
