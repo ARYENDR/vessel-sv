@@ -1,4 +1,4 @@
-use crate::audiosys::playback::spawn_audio_thread;
+use crate::{audiosys::playback::spawn_audio_thread, vessel_fs::cache::cache_control};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 mod audiosys;
