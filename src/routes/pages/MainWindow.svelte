@@ -8,8 +8,6 @@
 
     onMount(async () => {
       list = await invoke("get_audio_meta", {path: folderPath})
-      console.log(folderPath)
-      console.log(list)
     })
 
 </script>
