@@ -1,4 +1,4 @@
-use tauri::http::Response;
+use tauri::{Manager, http::Response};
 
 use crate::{
     audiosys::playback::spawn_audio_thread,
