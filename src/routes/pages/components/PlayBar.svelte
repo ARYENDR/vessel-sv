@@ -1,16 +1,33 @@
 <script lang="ts">
     import { invoke } from "@tauri-apps/api/core";
     import { listen } from "@tauri-apps/api/event";
-    import {Slider} from "bits-ui";
+    import { Slider } from "bits-ui";
 
-    let stamp = $state(listen("stamp", (s) => {
-      return parseInt(s.payload)
-    }))
+    let currentlyPlaying = $state({})
+    let stamp: number = $state(0)
 
-    let currentlyPlaying = $state(listen("currently_playing", (c) => {
-      console.log(c)
-      return c.payload
-    }))
+    $effect(() => {
+      const unlp = listen<number>('stamp', (s) => {
+        // console.log(s.payload);
+          const total = currentlyPlaying?.length || 1;
+          stamp = s.payload / total;
+      });
+      return () => {
+        unlp.then((unlisten) => unlisten());
+      };
+    });
+
+    $effect(() => {
+      const unlp = listen<number>('currently_playing', (s) => {
+        console.log(s.payload);
+          currentlyPlaying = s.payload;
+      });
+      return () => {
+        unlp.then((unlisten) => unlisten());
+      };
+    });
+
+
 </script>
 <main class="flex flex-row h-20 bg-main-highlight fixed bottom-0 justify-center items-center w-screen">
 
@@ -20,11 +37,15 @@
               await invoke("playback", {message: "PlayPause"})
             }} class="hover:underline">Play</button>
         </div>
-        <div class="relative w-100 h-5">
-            <div class="absolute w-full rounded-full h-full bg-green-500" > </div>
+        <div class="relative w-full h-5">
+            <div class="rounded-full w-150 bg-main-fg h-2 hover:h4 relative overflow-hidden">
+                <div class="absolute w-{stamp * 1.5} h-full bg-green-500" > </div>
             <Slider.Root
                 type="single"
-                bind:value={a}
+                min={0}
+                max={currentlyPlaying.length}
+                bind:value={stamp}
+                onmousedown={() => seek_to(stamp)}
                 class="relative flex w-full h-full touch-none items-center select-none"
               >
                 <span
@@ -39,7 +60,8 @@
                       }
                     />
               </Slider.Root>
+            </div>
         </div>
-        <h1>{a}</h1>
+        <h1>Slider: {stamp} - {currentlyPlaying.length}</h1>
     </div>
 </main>
