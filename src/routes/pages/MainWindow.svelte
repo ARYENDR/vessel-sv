@@ -1,11 +1,16 @@
 <script lang="ts">
     import { convertFileSrc, invoke } from "@tauri-apps/api/core";
+    // import { listen } from "@tauri-apps/api/event";
     import { onMount } from "svelte";
 
     let { folderPath } = $props()
 
     let list: {}[] = $state([]);
 
+//     let currentlyPlaying: {} | null = $state(
+//       listen("currently_playing", (c) => {return c})
+//     )
+// 
     onMount(async () => {
       list = await invoke("get_audio_meta", {path: folderPath})
     })
