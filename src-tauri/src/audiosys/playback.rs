@@ -25,66 +25,80 @@ pub fn spawn_audio_thread() -> AudTx {
         let sink = DeviceSinkBuilder::open_default_sink().expect("fail to open sink");
         let player = Player::connect_new(&sink.mixer());
 
-        while let Ok(msg) = rx.recv() {
-            match msg {
-                Message::Play(path) => {
-                    player.set_volume(1.0);
-                    let file = match File::open(&path) {
-                        Ok(f) => f,
-                        Err(e) => {
-                            println!("can't open: {}", e);
-                            continue;
-                        }
-                    };
-                    match Decoder::try_from(file) {
-                        Ok(source) => {
-                            player.clear();
-                            player.append(source);
-                            player.play();
-                        }
-                        Err(e) => println!("can't decode: {}", e),
-                    }
-                }
-                Message::PlayPause => {
-                    match player.is_paused() {
-                        false => {
-                            while player.volume() > 0.0 {
-                                player.set_volume(player.volume() - 0.01);
-                                thread::sleep(Duration::from_millis(5));
+        loop {
+            app.emit("stamp", player.get_pos().as_secs_f64()).unwrap();
+            println!("{}", player.get_pos().as_secs_f64());
+            thread::sleep(Duration::from_millis(200));
+            if let Ok(msg) = rx.try_recv() {
+                match msg {
+                    Message::Play(path) => {
+                        player.set_volume(1.0);
+                        let file = match File::open(&path) {
+                            Ok(f) => f,
+                            Err(e) => {
+                                println!("can't open: {}", e);
+                                continue;
                             }
-                            player.pause();
-                            player.set_volume(1.0);
-                        }
-                        true => {
-                            player.set_volume(0.0);
-                            player.play();
-                            while player.volume() < 1.0 {
-                                player.set_volume(player.volume() + 0.01);
-                                thread::sleep(Duration::from_millis(5));
+                        };
+                        match Decoder::try_from(file) {
+                            Ok(source) => {
+                                player.clear();
+                                player.append(source);
+                                player.play();
+                                println!("playing");
+                                app.emit("is_playing", true).unwrap();
+                                app.emit("currently_playing", VesAudio::get(&path));
                             }
-                            player.set_volume(1.0);
+                            Err(e) => {
+                                println!("can't decode: {}", e);
+                                println!("played wrong");
+                            }
                         }
                     }
-                    println!("{}", player.is_paused());
-                }
-                Message::Stop => player.clear(),
-                Message::Seek(d) => {
-                    if d.is_sign_negative() {
-                        let d = d * -1.0;
-                        if player.get_pos().clone().as_secs_f64() - d < 0.0 {
-                            player.try_seek(Duration::from_secs_f64(0.0)).unwrap();
+                    Message::PlayPause => {
+                        match player.is_paused() {
+                            false => {
+                                while player.volume() > 0.0 {
+                                    player.set_volume(player.volume() - 0.01);
+                                    thread::sleep(Duration::from_millis(5));
+                                }
+                                player.pause();
+                                player.set_volume(1.0);
+                                app.emit("is_playing", false);
+                            }
+                            true => {
+                                app.emit("is_playing", true);
+                                player.set_volume(0.0);
+                                player.play();
+                                while player.volume() < 1.0 {
+                                    player.set_volume(player.volume() + 0.01);
+                                    thread::sleep(Duration::from_millis(5));
+                                }
+                                player.set_volume(1.0);
+                            }
+                        }
+                        println!("{}", player.is_paused());
+                    }
+                    Message::Stop => player.clear(),
+                    Message::Seek(d) => {
+                        if d.is_sign_negative() {
+                            let d = d * -1.0;
+                            if player.get_pos().clone().as_secs_f64() - d < 0.0 {
+                                player.try_seek(Duration::from_secs_f64(0.0)).unwrap();
+                            } else {
+                                player
+                                    .try_seek(player.get_pos() - Duration::from_secs_f64(d))
+                                    .unwrap();
+                            }
                         } else {
                             player
-                                .try_seek(player.get_pos() - Duration::from_secs_f64(d))
+                                .try_seek(player.get_pos() + Duration::from_secs_f64(d))
                                 .unwrap();
                         }
-                    } else {
-                        player
-                            .try_seek(player.get_pos() + Duration::from_secs_f64(d))
-                            .unwrap();
                     }
-                    println!("{}", player.get_pos().as_secs_f64());
                 }
+            } else {
+                continue;
             }
         }
     });
