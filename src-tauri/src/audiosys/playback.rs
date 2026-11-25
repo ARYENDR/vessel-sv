@@ -1,12 +1,15 @@
 use std::{
     fs::File,
-    sync::{Mutex, mpsc},
+    sync::{Arc, Mutex, mpsc},
     thread,
     time::Duration,
 };
 
 use rodio::{Decoder, DeviceSinkBuilder, Player};
-use tauri::State;
+use serde::Serialize;
+use tauri::{AppHandle, Emitter, EventLoopMessage, State, Wry, ipc::Channel};
+
+use crate::audiosys::audio::VesAudio;
 
 enum Message {
     Play(String),
@@ -18,8 +21,10 @@ enum Message {
 // this took me days of documentation and i am proud of it aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 pub struct AudTx(Mutex<mpsc::Sender<Message>>);
 
-pub fn spawn_audio_thread() -> AudTx {
+pub fn spawn_audio_thread(app: &AppHandle) -> AudTx {
     let (tx, rx) = mpsc::channel::<Message>();
+
+    let app = app.clone();
 
     thread::spawn(move || {
         let sink = DeviceSinkBuilder::open_default_sink().expect("fail to open sink");
