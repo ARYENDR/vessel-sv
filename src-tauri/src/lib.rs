@@ -18,7 +18,12 @@ fn greet(name: &str) -> String {
 pub fn run() {
     cache_control().unwrap();
     tauri::Builder::default()
-        .manage(|app| spawn_audio_thread(app)) // spawns audio thread every boot
+        .setup(|app| {
+            let aud_tx = spawn_audio_thread(app.handle());
+            app.manage(aud_tx);
+            Ok(())
+        })
+        // .manage(|app| spawn_audio_thread(&app)) // spawns audio thread every boot
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .register_asynchronous_uri_scheme_protocol("covers", |_, request, responder| {
