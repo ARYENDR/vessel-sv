@@ -17,14 +17,21 @@
         {#each list as file}
             <button ondblclick={async () => {
               await invoke("playback", {message: "Play", path: file.path})
-            }} class="text-start p-5 hover:bg-main-highlight focus:bg-main-active flex flex-row">
-                <img class="h-10" src={convertFileSrc(file.path, "covers")} alt="">
+              console.log(file);
+              console.log(currentlyPlaying)}} class="text-start p-2 outline-none rounded-md hover:bg-main-highlight focus:bg-main-active flex flex-row items-center justify-start">
+                <img loading="lazy" class="h-10 rounded-md" src={convertFileSrc(file.path, "covers")} alt="">
                 <div class="ml-2">
                     <h1>{file.title}</h1>
-                    <div class="flex flex-row gap-3">
-                        {#each file.artists as artist}
+                    <div class="flex flex-row gap-1">
+                        {#each file.artists as artist, i}
                             <!-- IMPL! artist pages -->
-                            <a href={null} class="hover:underline">{artist}</a>
+
+                            {#if file.artists.length > 1 && file.artists.length -1 != i}
+                                    <a href={null} class="hover:underline flex flex-row">{artist},</a>
+                            {:else}
+                                <a href={null} class="hover:underline">{artist}</a>
+                            {/if}
+
                         {/each}
                     </div>
                 </div>
