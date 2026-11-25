@@ -1,8 +1,16 @@
 <script lang="ts">
     import { invoke } from "@tauri-apps/api/core";
+    import { listen } from "@tauri-apps/api/event";
     import {Slider} from "bits-ui";
 
-    let a: number = $state(50);
+    let stamp = $state(listen("stamp", (s) => {
+      return parseInt(s.payload)
+    }))
+
+    let currentlyPlaying = $state(listen("currently_playing", (c) => {
+      console.log(c)
+      return c.payload
+    }))
 </script>
 <main class="flex flex-row h-20 bg-main-highlight fixed bottom-0 justify-center items-center w-screen">
 
