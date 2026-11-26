@@ -5,17 +5,21 @@
 
     let currentlyPlaying = $state({})
     let stamp: number = $state(0)
+    let newStamp: number = $state(0)
+
+    let sliderStamp = $derived(stamp);
+    let isSliderDown: boolean = false;
 
     $effect(() => {
 
       const cpnlp = listen<{}>("currently_playing", (c) => {
         currentlyPlaying = c.payload
-        console.log(c.payload)
+        // console.log(c.payload)
       })
 
       const sunlp = listen<number>('stamp', (s) => {
           stamp = s.payload;
-          console.log(stamp)
+          // console.log(stamp)
       });
 
       return () => {
