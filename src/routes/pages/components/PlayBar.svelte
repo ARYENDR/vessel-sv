@@ -46,28 +46,14 @@
         </div>
         <div class="relative w-full h-5">
             <div class="rounded-full w-150 bg-main-fg h-2 hover:h4 relative overflow-hidden">
-                <div class="absolute w-{stamp * 1.5} h-full bg-green-500" > </div>
-            <Slider.Root
-                type="single"
-                min={0}
-                max={currentlyPlaying.length}
-                bind:value={stamp}
-                class="relative flex w-full h-full touch-none items-center select-none"
-              >
-                <span
-                  class="relative h-full w-full grow cursor-pointer overflow-hidden rounded-full bg-dark-10"
-                >
-                  <Slider.Range class="absolute h-full bg-foreground" />
-                </span>
-                <Slider.Thumb
-                      index={0}
-                      class={
-                        "block size-1 invisible cursor-pointer rounded-full border border-border-input bg-background shadow-sm transition-colors hover:border-dark-40 focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 data-active:scale-[0.98] data-active:border-dark-40 dark:bg-foreground dark:shadow-card"
-                      }
-                    />
-              </Slider.Root>
+                <div class="absolute w-{sliderStamp} h-full bg-green-500"></div>
+
+                <!-- BUG: This works but only half the time -->
+                <input onchange={
+                    async () => {await invoke("playback", {message: "Set", duration: sliderStamp}); sliderStamp = stamp;}
+                    } bind:value={sliderStamp} onmousedown={() => sliderStamp = newStamp} class="cursor-pointer w-full" type="range" min={0} max={currentlyPlaying.length}>
             </div>
         </div>
-        <h1>Slider: {stamp} - {currentlyPlaying.length}</h1>
+        <h1>Slider: {stamp} - {Math.floor(currentlyPlaying.length)} - {sliderStamp}</h1>
     </div>
 </main>
