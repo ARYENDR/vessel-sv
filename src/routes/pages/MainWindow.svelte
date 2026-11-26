@@ -10,7 +10,7 @@
 //     let currentlyPlaying: {} | null = $state(
 //       listen("currently_playing", (c) => {return c})
 //     )
-// 
+//
     onMount(async () => {
       list = await invoke("get_audio_meta", {path: folderPath})
     })
