@@ -49,12 +49,12 @@
         </div>
         <div class="relative w-full h-5">
             <div class="rounded-full w-150 bg-main-fg h-2 hover:h4 relative overflow-hidden">
-                <div class="absolute w-{sliderStamp} h-full bg-green-500"></div>
+                <div style:width="{((sliderStamp/currentlyPlaying.length) * 100).toString()}%" class="absolute w-1 h-full bg-green-500"></div>
 
                 <!-- BUG: This works but only half the time -->
                 <input onchange={
                     async () => {await invoke("playback", {message: "Set", duration: sliderStamp}); sliderStamp = stamp;}
-                    } bind:value={sliderStamp} onmousedown={() => sliderStamp = newStamp} class="cursor-pointer w-full" type="range" min={0} max={currentlyPlaying.length}>
+                    } bind:value={sliderStamp} onclick={() => sliderStamp = newStamp} class="appearance-none bg-transparent accent-amber-400 opacity-0 outline-none bg-none cursor-pointer w-full" type="range" min={0} max={currentlyPlaying.length}>
             </div>
         </div>
         <h1>Slider: {stamp} - {Math.floor(currentlyPlaying.length)} - {sliderStamp}</h1>
