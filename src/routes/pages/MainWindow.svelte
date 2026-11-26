@@ -21,9 +21,7 @@
     <div class="flex flex-col p-5">
         {#each list as file}
             <button ondblclick={async () => {
-              await invoke("playback", {message: "Play", path: file.path})
-              console.log(file);
-              console.log(currentlyPlaying)}} class="text-start p-2 outline-none rounded-md hover:bg-main-highlight focus:bg-main-active flex flex-row items-center justify-start">
+              await invoke("playback", {message: "Play", path: file.path})}} class="text-start p-2 outline-none rounded-md hover:bg-main-highlight focus:bg-main-active flex flex-row items-center justify-start">
                 <img loading="lazy" class="h-10 rounded-md" src={convertFileSrc(file.path, "covers")} alt="">
                 <div class="ml-2">
                     <h1>{file.title}</h1>
