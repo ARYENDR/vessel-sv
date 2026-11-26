@@ -7,25 +7,32 @@
     let stamp: number = $state(0)
 
     $effect(() => {
-      const unlp = listen<number>('stamp', (s) => {
-        // console.log(s.payload);
-          const total = currentlyPlaying?.length || 1;
-          stamp = s.payload / total;
+
+      const cpnlp = listen<{}>("currently_playing", (c) => {
+        currentlyPlaying = c.payload
+        console.log(c.payload)
+      })
+
+      const sunlp = listen<number>('stamp', (s) => {
+          stamp = s.payload;
+          console.log(stamp)
       });
+
       return () => {
-        unlp.then((unlisten) => unlisten());
+        cpnlp.then((unlisten) => unlisten());
+        sunlp.then((unlisten) => unlisten());
       };
     });
 
-    $effect(() => {
-      const unlp = listen<number>('currently_playing', (s) => {
-        console.log(s.payload);
-          currentlyPlaying = s.payload;
-      });
-      return () => {
-        unlp.then((unlisten) => unlisten());
-      };
-    });
+    // $effect(() => {
+    //   const unlp = listen<number>('currently_playing', (s) => {
+    //     console.log(s.payload);
+    //       currentlyPlaying = s.payload;
+    //   });
+    //   return () => {
+    //     unlp.then((unlisten) => unlisten());
+    //   };
+    // });
 
 
 </script>
@@ -45,7 +52,6 @@
                 min={0}
                 max={currentlyPlaying.length}
                 bind:value={stamp}
-                onmousedown={() => seek_to(stamp)}
                 class="relative flex w-full h-full touch-none items-center select-none"
               >
                 <span
