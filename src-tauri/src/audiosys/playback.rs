@@ -16,6 +16,7 @@ enum Message {
     PlayPause,
     Stop,
     Seek(f64),
+    Set(f64),
 }
 
 // this took me days of documentation and i am proud of it aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -101,6 +102,9 @@ pub fn spawn_audio_thread(app: &AppHandle) -> AudTx {
                                 .unwrap();
                         }
                     }
+                    Message::Set(d) => {
+                        player.try_seek(Duration::from_secs_f64(d));
+                    }
                 }
             } else {
                 continue;
@@ -123,6 +127,7 @@ pub fn playback(
         "PlayPause" => Message::PlayPause,
         "Stop" => Message::Stop,
         "Seek" => Message::Seek(duration.ok_or(0.0).unwrap()),
+        "Set" => Message::Set(duration.ok_or(0.0).unwrap()),
         other => return Err(format!("unknown playback message: {other}")),
     };
     audio.0.lock().unwrap().send(cmd).map_err(|e| e.to_string())
