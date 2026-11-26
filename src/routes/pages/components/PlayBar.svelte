@@ -1,7 +1,6 @@
 <script lang="ts">
     import { invoke } from "@tauri-apps/api/core";
     import { listen } from "@tauri-apps/api/event";
-    import { Slider } from "bits-ui";
 
     let currentlyPlaying = $state({})
     let stamp: number = $state(0)
