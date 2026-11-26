@@ -53,8 +53,8 @@
 
                 <!-- BUG: This works but only half the time -->
                 <input onchange={
-                    async () => {await invoke("playback", {message: "Set", duration: sliderStamp}); sliderStamp = stamp;}
-                    } bind:value={sliderStamp} onclick={() => sliderStamp = newStamp} class="appearance-none bg-transparent accent-amber-400 opacity-0 outline-none bg-none cursor-pointer w-full" type="range" min={0} max={currentlyPlaying.length}>
+                    async () => {await invoke("playback", {message: "Set", duration: sliderStamp}); sliderStamp = stamp}
+                    } bind:value={sliderStamp} onclick={() => {sliderStamp = newStamp}} class="appearance-none bg-transparent accent-amber-400 opacity-0 outline-none bg-none cursor-pointer w-full" type="range" min={0} max={currentlyPlaying.length}>
             </div>
         </div>
         <h1>Slider: {stamp} - {Math.floor(currentlyPlaying.length)} - {sliderStamp}</h1>
