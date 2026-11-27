@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="12.660657mm"
+   height="12.617595mm"
+   viewBox="0 0 12.660657 12.617595"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-37.895848,13.534155)">
+    <rect
+       style="fill:#000000;stroke:none;stroke-width:0.500999;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect71"
+       width="12.660658"
+       height="12.617595"
+       x="37.895851"
+       y="-13.534156"
+       ry="0.41408876" />
+    <path
+       d="m 48.826907,-10.612351 a 0.50851085,0.50851085 0 0 0 -0.11065,-0.165243 l -1.530124,-1.530123 a 0.51004098,0.51004098 0 1 0 -0.721199,0.721197 l 0.659471,0.659483 h -4.889243 a 2.550205,2.550205 0 0 0 -2.55021,2.5502047 v 1.020073 a 0.51004419,0.51004419 0 1 0 1.020086,0 v -1.020083 a 1.5301229,1.5301229 0 0 1 1.530124,-1.530123 h 4.889243 l -0.659471,0.659485 a 0.51004098,0.51004098 0 0 0 0.721199,0.721196 l 1.530124,-1.5301237 a 0.50851085,0.50851085 0 0 0 0.149395,-0.360598 m -0.03872,-0.195345 a 0.50800082,0.50800082 0 0 1 0.03872,0.193815 z m -9.103209,6.120492 a 0.50851085,0.50851085 0 0 0 0.11065,0.5559429 l 1.530124,1.530123 a 0.51004098,0.51004098 0 0 0 0.721173,-0.721197 l -0.65947,-0.659484 h 4.889243 a 2.550205,2.550205 0 0 0 2.550209,-2.5502022 v -1.020083 a 0.51004627,0.51004627 0 1 0 -1.020092,0 v 1.020083 a 1.5301229,1.5301229 0 0 1 -1.530117,1.530121 H 41.4262 l 0.65947,-0.659484 a 0.51004098,0.51004098 0 1 0 -0.721199,-0.721196 l -1.530124,1.5301233 m -0.110649,0.165243 a 0.50851085,0.50851085 0 0 1 0.109689,-0.164241 z"
+       fill="#0d0d0d"
+       id="path72"
+       style="fill:#ffffff;stroke-width:0.51004" />
+    <text
+       xml:space="preserve"
+       style="font-weight:900;font-size:3.69609px;font-family:'Allo Variable';-inkscape-font-specification:'Allo Variable Heavy';writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke:none;stroke-width:0.583223;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="43.584599"
+       y="-5.8808336"
+       id="text72"><tspan
+         id="tspan72"
+         style="fill:#ffffff;stroke:none;stroke-width:0.583228"
+         x="43.584599"
+         y="-5.8808336">1</tspan></text>
+  </g>
+</svg>
