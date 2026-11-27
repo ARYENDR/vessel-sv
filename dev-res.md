@@ -29,3 +29,7 @@ Error handling not yet implemented. Handle this before shipping.
 # EXP!
 Experimental feature.
 Be careful when shipping.
+
+# AWAY!
+Stay away from this part of code.
+Changes to this code may break the app.
