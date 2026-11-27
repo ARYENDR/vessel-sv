@@ -30,7 +30,7 @@
                             <!-- IMPL! artist pages -->
 
                             {#if file.artists.length > 1 && file.artists.length -1 != i}
-                                    <a href={null} class="hover:underline flex flex-row">{artist},</a>
+                                <a href={null} class="hover:underline flex flex-row">{artist},</a>
                             {:else}
                                 <a href={null} class="hover:underline">{artist}</a>
                             {/if}
